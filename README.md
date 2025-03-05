@@ -4,7 +4,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 
 local Window = Fluent:CreateWindow({
     Title = "Brookhaven Rp🏡",
-    SubTitle = "by (tubers hub)",
+    SubTitle = "by (👾 NexusPrime Hub 💠)",
     TabWidth = 160,
     Size = UDim2.fromOffset(480, 310),
     Acrylic = true,
@@ -25,7 +25,7 @@ local function fireAvatarChange(id, notificationTitle)
     local args = {
         [1] = "CharacterChange",
         [2] = argsTable,
-        [3] = "z4troxhub"
+        [3] = "👾 NexusPrime Hub 💠"
     }
 
     local replicatedStorage = game:GetService("ReplicatedStorage")
