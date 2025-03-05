@@ -1,31 +1,27 @@
+-- Carrega as bibliotecas Fluent, SaveManager e InterfaceManager
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- Criando a Janela da Interface
 local Window = Fluent:CreateWindow({
-    Title = "Brookhaven Rp🏡",
-    SubTitle = "by (👾 NexusPrime Hub 💠)",
+    Title = "Brookhaven RP 🏡 (Troll Hub 🤡)",
+    SubTitle = "🔥 Zoando geral! 💀",
     TabWidth = 160,
-    Size = UDim2.fromOffset(480, 310),
+    Size = UDim2.fromOffset(500, 320),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--- Fonction permettant de changer d'avatar.
--- Si l'argument "id" est une table, on l'utilise tel quel ; sinon, on crée la table par défaut.
-local function fireAvatarChange(id, notificationTitle)
-    local argsTable
-    if type(id) == "table" then
-        argsTable = id
-    else
-        argsTable = {1, 1, 1, 1, 1, id}
-    end
+-- Função para trocar a cabeça do avatar
+local function changeAvatar(id, notificationTitle)
+    local argsTable = (type(id) == "table") and id or {1, 1, 1, 1, 1, id}
 
     local args = {
         [1] = "CharacterChange",
         [2] = argsTable,
-        [3] = "👾 NexusPrime Hub 💠"
+        [3] = "🔥 Troll Hub 💀"
     }
 
     local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -37,184 +33,240 @@ local function fireAvatarChange(id, notificationTitle)
             remote:FireServer(unpack(args))
             starterGui:SetCore("SendNotification", {
                 Title = notificationTitle,
-                Text = "Wait Please 1-10 Seconds",
+                Text = "Aguarde 1-10 segundos...",
                 Duration = 5
             })
         end
     end
 end
 
--- Création des tabs
+-- Criando Abas
 local Tabs = {
-    Credits = Window:AddTab({ Title = "z4trox Hub Tab", Icon = "scroll" }),
-    Avatar = Window:AddTab({ Title = "Avatar Tab", Icon = "shirt" }),
-    Bundles = Window:AddTab({ Title = "Bundle Tab", Icon = "users" }),
-    Music = Window:AddTab({ Title = "Music Tab", Icon = "music" })
+    Avatar = Window:AddTab({ Title = "👤 Avatar", Icon = "shirt" }),
+    Troll = Window:AddTab({ Title = "🤡 Troll", Icon = "alert" }),
+    Hacks = Window:AddTab({ Title = "⚡ Hacks", Icon = "zap" }),
+    About = Window:AddTab({ Title = "ℹ️ Sobre", Icon = "info" })
 }
 
 -----------------------------------------------------------
--- Section Avatar
+-- 👤 Avatar
 -----------------------------------------------------------
-Tabs.Avatar:AddSection("Head ID (❓)/Yellow Pastel (🟡)")
+Tabs.Avatar:AddSection("Trocar Cabeça")
 
-Tabs.Avatar:AddInput("Head ID (❓)", {
-    Title = "Head ID (❓)",
+Tabs.Avatar:AddInput("Head ID", {
+    Title = "Digite o ID da Cabeça",
     Default = "",
     Placeholder = "ID",
     Numeric = true,
     Finished = true,
     Callback = function(s)
-        fireAvatarChange(tonumber(s), "Loading")
+        changeAvatar(tonumber(s), "Carregando...")
         wait(1)
         game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Done",
-            Text = "Successfully ✅",
+            Title = "Pronto!",
+            Text = "Cabeça alterada com sucesso ✅",
             Duration = 3
         })
     end
 })
 
 Tabs.Avatar:AddButton({
-    Title = "Pastel Yellow (🟡)",
-    Description = "",
+    Title = "Headless Horseman",
+    Description = "Cabeça invisível!",
     Callback = function()
-        fireAvatarChange("Pastel yellow", "Pastel Yellow Applied")
-    end
-})
-
-Tabs.Avatar:AddSection("Character Head (👤)")
-
-Tabs.Avatar:AddButton({
-    Title = "Headless Horseman (👤)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(134082579, "Headless Horseman")
+        changeAvatar(134082579, "Headless Horseman Aplicado!")
     end
 })
 
 Tabs.Avatar:AddButton({
-    Title = "Blaze Burner (👤)",
-    Description = "Working 🔨",
+    Title = "Perna de gelo",
+    Description = "perna de gelo☃️",
     Callback = function()
-        fireAvatarChange(3210773801, "Blaze Burner")
+        changeAvatar(3210773801, "Perna de gelo Aplicado!")
     end
-})
 
-Tabs.Avatar:AddButton({
-    Title = "Korblox DeathSpeaker (👤)",
-    Description = "Working 🔨",
+
+    Tabs.Avatar:AddButton({
+    Title = "Korblox left leg",
+    Description = "Korblox perna direita!",
     Callback = function()
-        fireAvatarChange(16580493236, "Korblox DeathSpeaker")
-    end
-})
-
-Tabs.Avatar:AddSection("Classic Head (👥)")
-
-Tabs.Avatar:AddButton({
-    Title = "Classic Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(746767604, "Classic Head")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Strong Jaw (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(616399508, "Strong Jaw")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Narrow Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(746774687, "Narrow Head")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Chiseled Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(616387160, "Chiseled Head")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Paragon Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(616398268, "Paragon Head")
+        changeAvatar(537527173859, "Korblox Aplicado!")
     end
 })
 
 -----------------------------------------------------------
--- Section Bundles (avatars spécifiques)
+-- 🤡 Troll (ESP)
 -----------------------------------------------------------
-Tabs.Bundles:AddButton({
-    Title = "Inf15 Thin",
-    Description = "(Boy) U Need Body Avatar",
+Tabs.Troll:AddSection("Trollando no servidor!")
+
+-- ESP (Nome do Jogador e Distância)
+local espActive = false
+local espElements = {}  -- Tabela para armazenar os elementos de ESP criados
+
+Tabs.Troll:AddButton({
+    Title = "Ativar ESP 🔍",
+    Description = "Veja o nome e distância dos jogadores!",
     Callback = function()
-        fireAvatarChange({
-            17873152058, 17873151683, 17873151726, 17873151827, 17873152017, 1
-        }, "Inf15 Thin")
-    end
-})
+        espActive = true
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character and player ~= game.Players.LocalPlayer then
+                local billboardGui = Instance.new("BillboardGui")
+                billboardGui.Parent = player.Character.Head
+                billboardGui.Adornee = player.Character.Head
+                billboardGui.Size = UDim2.new(0, 100, 0, 50)
+                billboardGui.StudsOffset = Vector3.new(0, 2, 0)
+                billboardGui.AlwaysOnTop = true
 
-Tabs.Bundles:AddButton({
-    Title = "Blush Fashion Doll (Black Torso)",
-    Description = "(Girl) Woman Arm/No Leg",
-    Callback = function()
-        fireAvatarChange({
-            96491916349570, 86499698, 86499716, 0, 0, 0
-        }, "Blush Fashion Doll")
-    end
-})
+                local textLabel = Instance.new("TextLabel")
+                textLabel.Parent = billboardGui
+                textLabel.Size = UDim2.new(1, 0, 1, 0)
+                textLabel.BackgroundTransparency = 1
+                textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                textLabel.TextStrokeTransparency = 0.8
+                textLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+                textLabel.TextSize = 14
+                textLabel.Text = player.Name .. "\n" .. tostring((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude) .. " studs"
 
-Tabs.Bundles:AddButton({
-    Title = "Mini Plushie",
-    Description = "(Boy, Girl) U Need Small Body Ava",
-    Callback = function()
-        fireAvatarChange({
-            18865136555, 14579959062, 14579959191, 14579959249, 14579963667, 1
-        }, "Mini Plushie")
-    end
-})
+                -- Atualizar a distância dinamicamente
+                spawn(function()
+                    while espActive do
+                        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                            local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
+                            textLabel.Text = player.Name .. "\n" .. math.floor(distance) .. " studs"
+                        end
+                        wait(0.1)  -- Atualiza a cada 0.1 segundos
+                    end
+                end)
 
------------------------------------------------------------
--- Section Music
------------------------------------------------------------
-Tabs.Music:AddSection("Music Section")
-
-Tabs.Music:AddInput("Enter Music ID", {
-    Title = "Enter Music ID",
-    Default = "",
-    Placeholder = "Enter ID here",
-    Finished = true,
-    Callback = function(Value)
-        local args = {
-            [1] = "PickingScooterMusicText",
-            [2] = Value
-        }
-        local replicatedStorage = game:GetService("ReplicatedStorage")
-        local remote = replicatedStorage.RE:FindFirstChild("1NoMoto1rVehicle1s")
-        if remote then
-            remote:FireServer(unpack(args))
+                table.insert(espElements, {player = player, billboardGui = billboardGui})
+            end
         end
     end
 })
 
------------------------------------------------------------
--- Section Credits
------------------------------------------------------------
-Tabs.Credits:AddSection("Update Logs📜/Credit 💳")
-Tabs.Credits:AddParagraph({
-    Title = "Update Logs 📜",
-    Content = "Added Bundles\nNew UI Library"
+-- Desativar ESP
+Tabs.Troll:AddButton({
+    Title = "Desativar ESP ❌",
+    Description = "Desativa o ESP!",
+    Callback = function()
+        espActive = false
+        for _, element in ipairs(espElements) do
+            if element.billboardGui then
+                element.billboardGui:Destroy()
+            end
+        end
+        espElements = {}  -- Limpa a tabela de elementos de ESP
+    end
 })
-Tabs.Credits:AddParagraph({
-    Title = "Credit 💳",
-    Content = "Discord💬 user: snobodj"
+
+-----------------------------------------------------------
+-- ⚡ Hacks (Velocidade + Pulo Infinito + Atravessar Paredes)
+-----------------------------------------------------------
+local speedActive = false
+local jumpActive = false
+local wallWalkActive = false
+
+Tabs.Hacks:AddSection("Superpoderes!")
+
+-- Velocidade infinita
+Tabs.Hacks:AddButton({
+    Title = "Ativar Super Velocidade ⚡",
+    Description = "Corre mais rápido que o Flash!",
+    Callback = function()
+        speedActive = true
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+    end
 })
+
+-- Desativar Velocidade
+Tabs.Hacks:AddButton({
+    Title = "Desativar Velocidade ❌",
+    Description = "Desativa a Super Velocidade!",
+    Callback = function()
+        speedActive = false
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    end
+})
+
+-- Pulo infinito
+Tabs.Hacks:AddButton({
+    Title = "Ativar Pulo Infinito 🦘",
+    Description = "Pule o quanto quiser sem limites!",
+    Callback = function()
+        jumpActive = true
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end)
+    end
+})
+
+-- Desativar Pulo Infinito
+Tabs.Hacks:AddButton({
+    Title = "Desativar Pulo Infinito ❌",
+    Description = "Desativa o Pulo Infinito!",
+    Callback = function()
+        jumpActive = false
+        -- Desconectar a função de pulo infinito
+        game:GetService("UserInputService").JumpRequest:Disconnect()
+    end
+})
+
+-- Atravessar Paredes
+Tabs.Hacks:AddButton({
+    Title = "Ativar Atravessar Paredes 🚪",
+    Description = "Agora você pode atravessar as paredes!",
+    Callback = function()
+        wallWalkActive = true
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local humanoid = character:WaitForChild("Humanoid")
+
+        local function enableWallWalk()
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        end
+
+        enableWallWalk()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Poder Ativado!",
+            Text = "Você agora pode atravessar paredes! 🚪",
+            Duration = 5
+        })
+    end
+})
+
+-- Desativar Atravessar Paredes
+Tabs.Hacks:AddButton({
+    Title = "Desativar Atravessar Paredes ❌",
+    Description = "Desativa o poder de atravessar paredes!",
+    Callback = function()
+        wallWalkActive = false
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+
+        local function disableWallWalk()
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                end
+            end
+        end
+
+        disableWallWalk()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Poder Desativado",
+            Text = "Você não pode mais atravessar paredes.",
+            Duration = 5
+        })
+    end
+})
+
+-----------------------------------------------------------
+-- ℹ️ Sobre
+-----------------------------------------------------------
+Tabs.About:AddSection("Sobre o Script")
+Tabs.About:AddParagraph("Criado por Troll Hub para bagunçar no Brookhaven RP!")
+Tabs.About:AddParagraph("Aproveite e divirta-se, mas sem exagerar! 😆")
