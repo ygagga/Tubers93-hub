@@ -1,87 +1,112 @@
-local Vape = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt"))()
-local Window = Vape:Window(
-    "Troll Hub", -- Título
-    Color3.fromRGB(44, 120, 224), -- Cor
-    Enum.KeyCode.RightControl -- Tecla para abrir/fechar
-)
+-- Carregar a Asrua UI
+local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/ahsrua/AsruaUI/main/sursa.lua"))():MakePrototypeLibrary("Troll Hub")
 
-local Tab = Window:Tab("Controle de Jogadores")
+-- Criar a aba principal
+local MainTab = Lib:MakeTab("Troll Hub", true)
 
--- Seleção de jogador
-Tab:Dropdown(
-    "Selecionar Jogador", 
-    {"Jogador1", "Jogador2", "Jogador3"}, 
-    function(Value)
-        print("Jogador selecionado:", Value)
-        selectedPlayer = Value
-    end
-)
+-- Obter lista de jogadores
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local selectedPlayer = nil
 
--- ESP Toggle
-Tab:Toggle(
-    "Ativar ESP", 
-    false, 
-    function(Value)
-        if Value then
-            print("ESP ativado")
-        else
-            print("ESP desativado")
+-- Atualizar a lista de jogadores
+function GetPlayerList()
+    local playerList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(playerList, player.Name)
         end
     end
-)
+    return playerList
+end
 
--- Teleportar para o jogador selecionado
-Tab:Button("Teleportar para o Jogador", function()
-    if selectedPlayer then
-        print("Teleportando para", selectedPlayer)
-        -- Código para teleportar para o jogador
+-- Dropdown para selecionar jogadores
+MainTab:Dropdown("Selecionar Jogador", GetPlayerList(), function(Value)
+    selectedPlayer = Players:FindFirstChild(Value)
+    print("Selecionado:", Value)
+end)
+
+-- ESP Toggle
+MainTab:Toggle("Ativar ESP", function(State)
+    if State then
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Character and not player.Character:FindFirstChild("ESP") then
+                local highlight = Instance.new("Highlight")
+                highlight.Name = "ESP"
+                highlight.Adornee = player.Character
+                highlight.Parent = player.Character
+            end
+        end
+        print("ESP ativado")
     else
-        print("Nenhum jogador selecionado!")
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("ESP") then
+                player.Character:FindFirstChild("ESP"):Destroy()
+            end
+        end
+        print("ESP desativado")
+    end
+end)
+
+-- Função de teleportar até o jogador
+MainTab:Button("Teleportar para o Jogador", function()
+    if selectedPlayer and selectedPlayer.Character and LocalPlayer.Character then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame
+        print("Teleportado para:", selectedPlayer.Name)
+    else
+        print("Nenhum jogador selecionado ou erro no teleport!")
     end
 end)
 
 -- Espectar jogador
-Tab:Button("Espectar Jogador", function()
-    if selectedPlayer then
-        print("Espectando", selectedPlayer)
-        -- Código para espectar o jogador
+MainTab:Button("Espectar Jogador", function()
+    if selectedPlayer and selectedPlayer.Character then
+        LocalPlayer.CameraSubject = selectedPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+        print("Espectando:", selectedPlayer.Name)
     else
-        print("Nenhum jogador selecionado!")
+        print("Erro ao espectar!")
     end
 end)
 
 -- Despectar jogador
-Tab:Button("Despectar", function()
+MainTab:Button("Despectar", function()
+    LocalPlayer.CameraSubject = LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
     print("Despectando...")
-    -- Código para despectar
 end)
 
--- Teleportar todos para o jogador
-Tab:Button("Teleportar Todos para Você", function()
-    print("Teleportando todos os jogadores para você...")
-    -- Código para teleportar todos os jogadores
+-- Teleportar todos para você
+MainTab:Button("Teleportar Todos para Você", function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            player.Character.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame
+        end
+    end
+    print("Todos teleportados para você!")
 end)
 
-local ScriptsTab = Window:Tab("Scripts Universais")
+-- Criar uma nova aba para Scripts Universais
+local ScriptsTab = Lib:MakeTab("Scripts Universais")
 
--- Carregar o RAEL Hub
-ScriptsTab:Button("Carregar RAEL Hub", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Laelmano24/Rael-Hub/main/main.txt"))()
+-- Funções do Troll Hub
+ScriptsTab:Button("Lagar o servidor", function()
+    for i = 1, 100 do
+        game:GetService("ReplicatedStorage").Events.PlaceStructure:FireServer()
+    end
+    print("Largando o servidor...")
 end)
 
--- Carregar o Fly Gui V3
-ScriptsTab:Button("Carregar Fly Gui V3", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+ScriptsTab:Button("Aumentar velocidade", function()
+    LocalPlayer.Character.Humanoid.WalkSpeed = 100
+    print("Velocidade aumentada!")
 end)
 
--- Carregar o Sander X
-ScriptsTab:Button("Carregar Sander X", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/sXPiterXs1111/Sanderxv3.30/main/sanderx3.30'))()
+ScriptsTab:Button("Tocar som específico", function()
+    local sound = Instance.new("Sound", LocalPlayer.Character)
+    sound.SoundId = "rbxassetid://1234567890" -- Troque pelo ID do som desejado
+    sound:Play()
+    print("Tocando som...")
 end)
 
--- Notificação
-Vape:Notification(
-    "Troll Hub", 
-    "Interface Carregada com Sucesso", 
-    "Aproveite as funcionalidades!"
-)
+ScriptsTab:Button("Matar jogador (Carro/Sofá)", function()
+    if selected
+    
