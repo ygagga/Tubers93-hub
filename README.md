@@ -1,112 +1,72 @@
--- Carregar a Asrua UI
-local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/ahsrua/AsruaUI/main/sursa.lua"))():MakePrototypeLibrary("Troll Hub")
+-- Carregar a biblioteca Rayfield
+local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/CCB-RBLX/Rayfield/main/source.lua"))()
 
--- Criar a aba principal
-local MainTab = Lib:MakeTab("Troll Hub", true)
+-- Criando a Janela da Interface
+local Window = Rayfield:CreateWindow({
+    Name = "Brookhaven RP 🏡 (Troll Hub 🤡)",
+    LoadingTitle = "Carregando...",
+    LoadingSubtitle = "Por favor, aguarde...",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "Rayfield",
+        FileName = "TrollHub"
+    },
+    Discord = {
+        Enabled = true,
+        Invite = "discord.gg/example",
+        RememberJoins = true
+    },
+    KeySystem = true,
+    KeySettings = {
+        Key = "TROLL",
+        KeyEnabled = true,
+        KeyCooldown = 5,
+        KeyCheckInterval = 1
+    }
+})
 
--- Obter lista de jogadores
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local selectedPlayer = nil
+-- Criando a Aba Troll
+local TrollTab = Window:CreateTab("🤡 Troll", 4483362458)
 
--- Atualizar a lista de jogadores
-function GetPlayerList()
-    local playerList = {}
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer then
-            table.insert(playerList, player.Name)
+TrollTab:CreateSection("Controle de Jogadores")
+
+local selectedPlayer = ""
+
+-- Campo de entrada para o nome do jogador
+TrollTab:CreateInput({
+    Name = "Nome do Jogador",
+    PlaceholderText = "Digite o nome do jogador",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(value)
+        selectedPlayer = value
+    end
+})
+
+-- Função para trazer todas as partes para o jogador selecionado
+local function bringAllPartsToPlayer()
+    local targetPlayer = game.Players:FindFirstChild(selectedPlayer)
+
+    if not targetPlayer or not targetPlayer.Character then
+        warn("Jogador inválido!")
+        return
+    end
+
+    local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not targetRoot then return end
+
+    -- Percorrer todas as partes no jogo
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA("BasePart") and not part:IsDescendantOf(targetPlayer.Character) then
+            part.CFrame = targetRoot.CFrame + Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
         end
     end
-    return playerList
 end
 
--- Dropdown para selecionar jogadores
-MainTab:Dropdown("Selecionar Jogador", GetPlayerList(), function(Value)
-    selectedPlayer = Players:FindFirstChild(Value)
-    print("Selecionado:", Value)
-end)
-
--- ESP Toggle
-MainTab:Toggle("Ativar ESP", function(State)
-    if State then
-        for _, player in pairs(Players:GetPlayers()) do
-            if player.Character and not player.Character:FindFirstChild("ESP") then
-                local highlight = Instance.new("Highlight")
-                highlight.Name = "ESP"
-                highlight.Adornee = player.Character
-                highlight.Parent = player.Character
-            end
-        end
-        print("ESP ativado")
-    else
-        for _, player in pairs(Players:GetPlayers()) do
-            if player.Character and player.Character:FindFirstChild("ESP") then
-                player.Character:FindFirstChild("ESP"):Destroy()
-            end
-        end
-        print("ESP desativado")
+-- Botão para trazer todas as partes para o jogador selecionado
+TrollTab:CreateButton({
+    Name = "Trazer Todas as Partes 🔄",
+    Description = "Traz todas as partes possíveis do mapa para o jogador selecionado.",
+    Callback = function()
+        bringAllPartsToPlayer()
     end
-end)
-
--- Função de teleportar até o jogador
-MainTab:Button("Teleportar para o Jogador", function()
-    if selectedPlayer and selectedPlayer.Character and LocalPlayer.Character then
-        LocalPlayer.Character.HumanoidRootPart.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame
-        print("Teleportado para:", selectedPlayer.Name)
-    else
-        print("Nenhum jogador selecionado ou erro no teleport!")
-    end
-end)
-
--- Espectar jogador
-MainTab:Button("Espectar Jogador", function()
-    if selectedPlayer and selectedPlayer.Character then
-        LocalPlayer.CameraSubject = selectedPlayer.Character:FindFirstChildWhichIsA("Humanoid")
-        print("Espectando:", selectedPlayer.Name)
-    else
-        print("Erro ao espectar!")
-    end
-end)
-
--- Despectar jogador
-MainTab:Button("Despectar", function()
-    LocalPlayer.CameraSubject = LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
-    print("Despectando...")
-end)
-
--- Teleportar todos para você
-MainTab:Button("Teleportar Todos para Você", function()
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character then
-            player.Character.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame
-        end
-    end
-    print("Todos teleportados para você!")
-end)
-
--- Criar uma nova aba para Scripts Universais
-local ScriptsTab = Lib:MakeTab("Scripts Universais")
-
--- Funções do Troll Hub
-ScriptsTab:Button("Lagar o servidor", function()
-    for i = 1, 100 do
-        game:GetService("ReplicatedStorage").Events.PlaceStructure:FireServer()
-    end
-    print("Largando o servidor...")
-end)
-
-ScriptsTab:Button("Aumentar velocidade", function()
-    LocalPlayer.Character.Humanoid.WalkSpeed = 100
-    print("Velocidade aumentada!")
-end)
-
-ScriptsTab:Button("Tocar som específico", function()
-    local sound = Instance.new("Sound", LocalPlayer.Character)
-    sound.SoundId = "rbxassetid://1234567890" -- Troque pelo ID do som desejado
-    sound:Play()
-    print("Tocando som...")
-end)
-
-ScriptsTab:Button("Matar jogador (Carro/Sofá)", function()
-    if selected
-    
+})
